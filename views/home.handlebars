@@ -1,0 +1,52 @@
+<div class="container">
+
+    <div class="page-header text-center">
+        <h2>Donate N Share Books</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 text-right">
+            <div class="input-group col-sm-2"></div>
+            <div class="input-group col-sm-6">
+                <form method="post" action="home">
+                    <div class="input-group">
+                    <input type="search" class="form-control" name="searchText">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit" name="search" id="search">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true">
+                            </span> Search!</button>
+                    </span>
+                    </div>
+                </form>
+            </div>
+            <button class="btn btn-default" type="submit">Log Out</button>
+            <button class="btn btn-default" type="submit">Sign Up</button>
+            <button class="btn btn-default" type="submit">Sign In</button>
+            <a class="btn btn-primary" href="editbook">Add Book Details</a>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            {{#each books }}
+            <hr />
+            <div class="row">
+                <div class="col-sm-3">
+                    <a href="/editbook/{{_id}}"><img class="thumbnail" src="{{ image1 }}" alt="Image"></a>
+                </div>
+                <div class="col-sm-8">
+                    <b>{{ title }}</b><br />
+                    {{ description}} <br />
+                    Category: {{ category }} <br />
+                    For {{ purpose }} <br/><br/>
+                    <b>Contact: </b> {{ contactName }} / {{ phone }}
+                </div>
+            </div>
+            
+            {{/each}}
+        </div>
+    </div>
+    
+</div>

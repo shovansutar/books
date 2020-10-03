@@ -1,0 +1,52 @@
+<div class="container">
+
+    <h1>Enter Book Details</h1>
+    <br />
+    <div class="row">
+        <!-- <div class="col-sm-3"></div> -->
+
+        <div class="col-sm-6">
+            <form action="/newbook" enctype="multipart/form-data" method="post">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter Title" value="{{currBook.title}}">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" id="description" name="description" value="{{currBook.description}}">
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    {{!-- <input type="text" class="form-control" id="category"> --}}
+                    <select class="form-control" id="category" name="category" value="{{currBook.category}}">                    
+                        {{#each categories }}
+                        <option>{{ categoryName }}</option>
+                        {{/each}}                    
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="purpose">Purpose</label>
+                    <select class="form-control" id="purpose" name="purpose" value="{{currBook.purpose}}">
+                        <option>Share</option>
+                        <option>Donate</option>
+                    </select>
+                    <!-- <input type="text" class="form-control" id="purpose"> -->
+                </div>
+                <div class="form-group">
+                    <label for="file-to-upload">Picture {{currBook.image1}}</label>
+                    <input class="form-conrol" type="file" id="file-to-upload" name="file-to-upload">
+                </div>
+                <div class="form-group">
+                    <label for="contact">Contact Name</label>
+                    <input type="text" class="form-control" id="contact" name="contactName" value="{{currBook.contactName}}">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" class="form-control" id="phone" name="phone" value="{{currBook.phone}}">
+                </div>
+                <a class="btn btn-default" href="/home">Cancel</a>
+                <input class="btn btn-primary" type="submit" name="save" value="Save">                
+            </form>
+        </div>
+    </div>
+</div>
