@@ -24,6 +24,7 @@ module.exports = function(app, passport) {
         });
     });
     // Home SECTION =========================
+    app.get('/api', home.index);
     app.get('/home', home.index);
     app.post('/home', home.search);
 
