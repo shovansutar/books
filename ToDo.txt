@@ -2,7 +2,7 @@ To Do
 =====
 * Edit book details 
 * Implement validation pattern in create flow/edit flow
-* Delete a book
+. Delete a book
 * Security: Edit book details by owner
 . Add Book timestamp
 * Book lifecylcle: Crete > Shared > Deleted etc.
