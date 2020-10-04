@@ -1,5 +1,6 @@
 var editbook = require('../contoller/editbook');
 var home = require('../contoller/home');
+var api = require('../contoller/api');
 var fs = require('fs'),
     multer = require('multer'),
     path = require('path');
@@ -24,7 +25,12 @@ module.exports = function(app, passport) {
         });
     });
     // Home SECTION =========================
-    app.get('/api', home.index);
+    app.get('/api', api.index);
+    app.get('/api/book', api.bookAll);
+    app.get('/api/book/:book_id', api.bookOne);
+    app.delete('/api/book/:book_id', api.remove);
+    app.post('/api/upload', upload.single('file-to-upload'), api.saveTempFile);
+
     app.get('/home', home.index);
     app.post('/home', home.search);
 
