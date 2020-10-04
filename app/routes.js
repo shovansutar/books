@@ -28,7 +28,9 @@ module.exports = function(app, passport) {
     app.get('/api', api.index);
     app.get('/api/book', api.bookAll);
     app.get('/api/book/:book_id', api.bookOne);
+    app.post('/api/book', api.addBook);
     app.delete('/api/book/:book_id', api.remove);
+    app.put('/api/book/:book_id', api.updateBook);
     app.post('/api/upload', upload.single('file-to-upload'), api.saveTempFile);
 
     app.get('/home', home.index);

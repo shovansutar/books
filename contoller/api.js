@@ -32,6 +32,38 @@ module.exports = {
             })
         }
     },
+    addBook: function(req, res){        
+        var newbook = new Book(req.body);
+        newbook.created = new Date();
+        // res.json({msg: 'Success'});
+        newbook.save(function(err, comment){
+            if (err) { 
+                console.log("Error creating book: " + err);
+                res.json({msg: 'Failed to add book'});
+            } else {
+                console.log('Added book');
+                res.json({msg: 'Success', key: newbook._id});
+            }
+        });
+    },
+    updateBook: function(req, res){        
+        var bookId = req.params.book_id;
+        console.log("update book id: " + bookId);
+        if(bookId){
+            Book.findOneAndUpdate({_id: bookId}, req.body, {new:true}, function(err, cbook){
+                if(err) { 
+                    console.log("Book not found: " + bookId);
+                    res.json({msg: 'Error updating book'});
+                    // throw err; 
+                } else {
+                    console.log('Updated: ' + cbook);
+                    res.json({msg: 'Success', book: cbook});
+                }
+            });
+        } else {
+            res.json({msg: 'Book not found: ' + bookId});
+        }
+    },
     remove: function(req, res){        
         var bookId = req.params.book_id;
         console.log("delete id: " + bookId);
