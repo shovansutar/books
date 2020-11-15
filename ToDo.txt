@@ -1,15 +1,14 @@
 To Do
 =====
-* Edit book details 
-* Implement validation pattern in create flow/edit flow
+. Edit book details 
 . Delete a book
+. expose node server to world using localtunnel: lt --port 3300
 * Security: Edit book details by owner
 . Add Book timestamp
 * Book lifecylcle: Crete > Shared > Deleted etc.
-* Category Navbar
+. Category Navbar
 * Explore elastic search for books
-* No books found message
-* blabla
+. No books found message
 
 
 

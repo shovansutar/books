@@ -1,5 +1,6 @@
 // REST API code
 var Book = require('../app/models/book');
+var Category = require('../app/models/category');
 var fs = require('fs');
 var path = require('path');
 
@@ -7,8 +8,17 @@ module.exports = {
     index: function(req, res){
         res.json("{api: 'hello'}");
     },
-    bookAll: function(req, res){
-        
+    category: function(req, res){
+        Category.find({}, function(err, cats){
+            if(err) { 
+                console.log("Categories not found");
+                res.json({msg: 'categories not found'});
+            } else {
+                res.json(cats);    
+            }
+        });
+    },
+    bookAll: function(req, res){        
         Book.find({}, {}, {sort: {created: -1}, limit:10 }, function(err, books){
             if(err) { 
                 console.log("Book not found: " + bookId);
@@ -116,11 +126,12 @@ module.exports = {
             } else {
                 fs.unlink(tempPath, function (err) {
                     if (err) throw err;
-                    res.status(500).json({msg: 'Only image files are allowed: png/jpg/jpeg/gif.'});
+                    res.status(500).json({msg: 'Only image files are allowed: png/jpg/jpeg/gif.',
+                                         code: 'BAD_FILE_TYPE'});
                 });
             }
         } else {
-            res.status(500).json({msg: 'Invalid File Upload Request'});
+            res.status(500).json({msg: 'Invalid File Upload Request', code: 'UNKNOWN_ERR'});
         }
     }
 };

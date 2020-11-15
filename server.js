@@ -20,6 +20,7 @@
 // get all the tools we need
 var express  = require('express');
 var app      = express();
+var cors = require('cors'); 
 var port     = process.env.PORT || 3300;
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -44,6 +45,7 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/public/', express.static('public'));
+app.use(cors());
 
 // set view engine
 app.engine('handlebars', exphbs.create({
