@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 // define the schema for our book model
 var bookSchema = mongoose.Schema({
     title           : String,
+    author          : String,
     category        : String,
     purpose         : String,
     description     : String,
