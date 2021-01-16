@@ -1,12 +1,12 @@
 To Do
 =====
-. Edit book details 
-. Delete a book
-. expose node server to world using localtunnel: lt --port 3300
-* Security: Edit book details by owner
-. Add Book timestamp
+* Mybook
+* search feature
+* Edit book details
+* Polish book card
+* Polish registration page
+* geo tag 
 * Book lifecylcle: Crete > Shared > Deleted etc.
-. Category Navbar
 * Explore elastic search for books
 . No books found message
 
@@ -15,3 +15,8 @@ To Do
 Done
 =====
 . Capture Book Image
+. Delete a book
+. expose node server to world using localtunnel: lt --port 3300
+. Category Navbar
+. Add Book timestamp
+. Security
