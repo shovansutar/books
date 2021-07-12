@@ -31,10 +31,22 @@ module.exports = function(app, passport) {
     app.get('/api/category', api.category);
     app.get('/api/book', api.bookAll);
     app.get('/api/bookSearch/:pattern', api.bookSearch);
-    app.get('/api/book/:book_id', api.bookOne);
+    
+    // Book CRUD
     app.post('/api/book', verifyToken, api.addBook);
-    app.delete('/api/book/:book_id', verifyToken, api.remove);
+    app.get('/api/book/:book_id', api.bookOne);
     app.put('/api/book/:book_id', verifyToken, api.updateBook);
+    app.delete('/api/book/:book_id', verifyToken, api.remove);
+
+    // Request CRUD
+    app.post('/api/request', verifyToken, api.addRequest);
+    app.get('/api/request/:request_id', verifyToken, api.requestOne);
+    app.get('/api/myrequests', verifyToken, api.myRequests);
+    app.get('/api/pendingreqs', verifyToken, api.pendingRequests);
+    app.get('/api/myprofile', verifyToken, api.myProfile);
+    app.put('/api/request/:request_id', verifyToken, api.updateRequest);
+    // app.delete('/api/request/:request_id', verifyToken, api.remove);
+
     app.post('/api/upload', verifyToken, upload.single('file-to-upload'), api.saveTempFile);
 
     app.get('/home', home.index);
@@ -241,7 +253,8 @@ function verifyToken(req, res, next) {
     }
     try {
         let payload = jwt.verify(token, conf.secretKey)
-        // console.log('payload = ', payload)
+        console.log('payload = ', payload)
+        req.userid = payload.subject;
     } catch (err) {
         console.log(err);
         return res.status(401).send('Unauthorized request')

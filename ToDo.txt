@@ -1,14 +1,21 @@
 To Do
 =====
-* Mybook
-* search feature
+* Request is not checking for duplicates.
+* Cant search C++. Make the search POST operation instead of GET 
+* Mybook / Add ownerId in BookSchema
+* Job to clean orphan image files
+* Add security around Request CRUD
+* Request a book
+* My Requests
+* Sidenav categories not working
 * Edit book details
 * Polish book card
-* Polish registration page
+* Polish registration page - show error
 * geo tag 
 * Book lifecylcle: Crete > Shared > Deleted etc.
-* Explore elastic search for books
+? Explore elastic search for books
 . No books found message
+. search feature
 
 
 

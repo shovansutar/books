@@ -31,7 +31,10 @@ var allCats = [
     {id:'102', name : 'Cooking'},
     {id:'103', name : 'Kids'},
     {id:'104', name : 'Science'},
-    {id:'105', name : 'Arts'}
+    {id:'105', name : 'Arts'},
+    {id:'106', name : 'Computer'},
+    {id:'107', name : 'Commerce'},
+    {id:'108', name : 'Text Book'}
 ];
 
 mongoose.connect(configDB.url,{ useNewUrlParser: true });
