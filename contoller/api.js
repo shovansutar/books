@@ -1,5 +1,6 @@
 // REST API code
 var Book = require('../app/models/book');
+var Request = require('../app/models/request');
 var Category = require('../app/models/category');
 var fs = require('fs');
 var path = require('path');
@@ -102,31 +103,43 @@ module.exports = {
     },
     remove: function(req, res){        
         var bookId = req.params.book_id;
+        var userid = req.userid;
         console.log("delete id: " + bookId);
         if(bookId){
-            Book.findOneAndDelete({_id: bookId}, function(err, cbook){
-                if(err) { 
-                    console.log("Book not found: " + bookId);
-                    res.json({msg: 'Error deleting book'});
-                    // throw err; 
-                } else {
-                    console.log('Deleting: ' + cbook);
-                    if(cbook != null){
-                        var imagePath = cbook.image1;
-                        if(imagePath != null){
-                            fs.unlink(imagePath, function (err) {
-                                if (err) {
-                                    console.log("Error removing image: " + err);
-                                    // res.json({msg: 'Error Removing Image'});
+            Book.findById(bookId, function(err, cbook){
+                if(cbook != null){
+                    var owner = cbook.ownerId;
+                    console.log("User/Owner: ",userid,"/",owner);
+                    if(owner == userid){
+                        console.log("Will delete");
+                        Book.findOneAndDelete({_id: bookId}, function(err, cbook){
+                            if(err) { 
+                                console.log("Book not found: " + bookId);
+                                res.json({msg: 'Error deleting book'});
+                                // throw err; 
+                            } else {
+                                console.log('Deleting: ' + cbook);
+                                if(cbook != null){
+                                    var imagePath = cbook.image1;
+                                    if(imagePath != null){
+                                        fs.unlink(imagePath, function (err) {
+                                            if (err) {
+                                                console.log("Error removing image: " + err);
+                                                // res.json({msg: 'Error Removing Image'});
+                                            }
+                                        });
+                                    }    
+                                    res.status(200).send({msg: 'Success'});
+                                } else {
+                                    res.json({msg: 'Book not found'});
                                 }
-                            });
-                        }    
-                        res.status(200).send({msg: 'Success'});
+                            }
+                        });
                     } else {
-                        res.json({msg: 'Book not found'});
+                        res.status(401).send({msg: 'Not the Owner, Cannot delete'});
                     }
                 }
-            });
+            })
         }
     },
     saveTempFile: function(req, res){
@@ -185,6 +198,19 @@ module.exports = {
             }
         })
     },
+    myProfile: function(req, res){ 
+        var userid = req.userid;
+        console.log('UserId: ', userid);
+        User.findById(userid, function (err, user) {
+                if (err) {
+                    console.log("User not found");
+                    res.json({ msg: 'User not found' });
+                } else {
+                    res.json(user);
+                }
+            }
+        );
+    },
     login: function (req, res) {
         let userData = req.body
         User.findOne({ email: userData.email }, (err, user) => {
@@ -206,5 +232,99 @@ module.exports = {
                 }
             }
         })
+    },
+    requestOne: function(req, res){        
+        var reqId = req.params.request_id;
+        if(reqId){
+            Request.findById(reqId, function(err, creq){
+                if(err) { 
+                    console.log("Request not found: " + reqId);
+                    res.json({msg: 'Request not found'});
+                    // throw err; 
+                } else {
+                    res.json(creq);
+                }
+            })
+        }
+    },
+    myRequests: function(req, res){ 
+        var userid = req.userid;
+        console.log('UserID: ',userid);
+        Request.find({requesterId: userid}, {}, {sort: {created: -1}, limit:100}, 
+            function (err, reqs) {
+                if (err) {
+                    console.log("Request not found");
+                    res.json({ msg: 'Request not found' });
+                } else {
+                    console.log('No of reqs: ' + reqs.length);
+                    res.json(reqs);
+                }
+            }
+        );
+    },
+    pendingRequests: function(req, res){ 
+        var userid = req.userid;
+        console.log('UserID: ',userid);
+        Request.find({ownerId: userid}, {}, {sort: {created: -1}, limit:100}, 
+            function (err, reqs) {
+                if (err) {
+                    console.log("Request not found");
+                    res.json({ msg: 'Request not found' });
+                } else {
+                    console.log('No of reqs: ' + reqs.length);
+                    res.json(reqs);
+                }
+            }
+        );
+    },
+    addRequest: function(req, res){        
+        var newreq = new Request(req.body);
+        var userid = req.userid;
+        newreq.requesterId = userid;
+        newreq.status = 'New';
+        newreq.created = new Date();
+        // res.json({msg: 'Success'});
+        newreq.save(function(err, comment){
+            if (err) { 
+                console.log("Error creating request: " + err);
+                res.json({msg: 'Failed to add request'});
+            } else {
+                console.log('Added request');
+                res.json({msg: 'Success', key: newreq._id});
+            }
+        });
+    },
+    updateRequest: function(req, res){        
+        var reqId = req.params.request_id;
+        var userId = req.userid;
+        
+        console.log("update request id: " + reqId);
+        if(reqId){
+            Request.findById(reqId, function(err, creq){
+                if(err) { 
+                    console.log("Request not found: " + reqId);
+                    res.json({msg: 'Request not found'});
+                    // throw err; 
+                } else {
+                    if (userId == creq.requesterId || userId == creq.ownerId){
+                        Request.findOneAndUpdate({_id: reqId}, req.body, {new:true}, function(err, r){
+                            if(err) { 
+                                console.log("Request not found: " + reqId);
+                                res.json({msg: 'Error updating request'});
+                                // throw err; 
+                            } else {
+                                console.log('values: ', req.body);
+                                console.log('Updated: ' + r);
+                                res.json({msg: 'Success', request: r});
+                            }
+                        });
+                    } else {
+                        res.status(401).json({msg: 'User doesnt own this request'});
+                    }
+                }
+            })
+        } else {
+            res.json({msg: 'Request not found: ' + reqId});
+        }
     }
 };

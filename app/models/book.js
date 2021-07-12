@@ -13,7 +13,9 @@ var bookSchema = mongoose.Schema({
     city            : String,
     created         : Date,
     status          : String,
-    image1          : String
+    image1          : String,
+    ownerId         : String,
+    status          : String
 });
 
 
